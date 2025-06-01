@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+    <div class="container">
+
+        <a class="navbar-brand cobalt-blue" href="/" style="font-weight: 700;">E-Learning</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+
+            <form th:action="@{/search}" method="get" class="d-flex mx-auto my-3 my-lg-0" style="flex-grow:1; max-width: 400px;">
+                <div class="input-group">
+                    <input type="text"
+                           name="query"
+                           class="form-control"
+                           placeholder="Search courses..."
+                           aria-label="Search courses"
+                           th:value="${searchQuery}">
+                    <button class="btn bg-cobalt-blue text-white" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Right-aligned navigation items -->
+            <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center ms-lg-auto">
+                <a href="/about" class="btn btn-link cobalt-blue text-decoration-none mb-2 mb-lg-0 me-lg-3">About</a>
+
+                <!-- Authenticated User Section -->
+                <div sec:authorize="isAuthenticated()" class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center">
+                    <!-- Profile Icon -->
+                    <a href="/profile" class="btn btn-outline-cobalt-blue rounded-circle mb-2 mb-lg-0 me-lg-2">
+                        <i class="fas fa-user"></i>
+                    </a>
+
+                    <!-- Course Creator Button -->
+                    <div th:if="${isCourseCreator}" class="mb-2 mb-lg-0 me-lg-2">
+                        <a href="/create-course" class="btn bg-cobalt-blue text-white">
+                            <i class="fas fa-plus me-2"></i>Create Course
+                        </a>
+                    </div>
+
+                    <!-- Administrator buttons -->
+                    <div th:if="${isAdministrator}" class="d-flex flex-column flex-lg-row mb-2 mb-lg-0">
+                        <a href="/approve-courses" class="btn bg-cobalt-blue text-white mb-2 mb-lg-0 me-lg-2">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>&nbsp; Approve Courses (<span th:text="${unapprovedCourseCount}"></span>)
+                        </a>
+                        <a href="/approve-lessons" class="btn bg-cobalt-blue text-white">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>&nbsp; Approve Lessons (<span th:text="${unapprovedLessonCount}"></span>)
+                        </a>
+                    </div>
+
+                    <form th:action="@{/logout}" method="post" class="mt-2 mt-lg-0">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt me-2"></i>Log Out
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Unauthenticated User Section -->
+                <div sec:authorize="!isAuthenticated()" class="mt-2 mt-lg-0">
+                    <a href="/oauth2/authorization/google" class="btn bg-cobalt-blue text-white">
+                        <i class="fab fa-google me-2"></i>Login with Google
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .cobalt-blue { color: #21618C; }
+        .bg-cobalt-blue { background-color: #21618C; }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="navbar-spacer" style="height: 56px;"></div>
+
+    <div class="container mt-5">
+        <h3 class="mb-4 cobalt-blue">
+            Search Results for: <span th:text="${searchQuery}"></span>
+        </h3>
+
+        <div th:if="${not #lists.isEmpty(results)}" class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="course : ${results}">
+                <div class="card h-100 shadow">
+                    <img th:src="${course.imageUrl}" class="card-img-top"
+                         alt="Course image" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title cobalt-blue" th:text="${course.title}"></h5>
+                        <p class="card-text" th:text="${course.description}"></p>
+                        <a th:href="@{/course/{id}(id=${course.id})}"
+                           class="btn bg-cobalt-blue text-white">View Course</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(results)}" class="alert alert-info mt-3">
+            No courses found matching your search.
+        </div>
+    </div>
+
+    <!-- Bootstrap & Font Awesome -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/5a175c7203.js" crossorigin="anonymous"></script>
+</body>
+</html>
